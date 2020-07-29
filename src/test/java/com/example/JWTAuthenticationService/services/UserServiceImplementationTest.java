@@ -1,12 +1,10 @@
 package com.example.JWTAuthenticationService.services;
 
+import com.example.JWTAuthenticationService.models.Role;
 import com.example.JWTAuthenticationService.models.User;
 import com.example.JWTAuthenticationService.repositories.RoleRepository;
 import com.example.JWTAuthenticationService.repositories.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
@@ -15,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,7 +51,9 @@ class UserServiceImplementationTest {
 
     @Test
     void registerNewUser() {
-        User user = new User(1, new Date(), new Date());
+        User user = new User("username","password");
+        Mockito.when(userRepository.save(user)).thenReturn(user);
+        Mockito.when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(new Role("USER_ROLE")));
     }
 
     @Test

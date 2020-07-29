@@ -12,6 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 public class User extends BaseEntity {
 
+    //constructor for testing
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 

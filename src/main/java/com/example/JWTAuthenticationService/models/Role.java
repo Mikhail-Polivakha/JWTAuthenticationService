@@ -14,6 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class Role extends BaseEntity {
 
+    public Role(String name) {
+        this.name = name;
+    }
+
     @Column(name = "name")
     private String name;
 

@@ -43,7 +43,7 @@ public class UserServiceImplementation implements UserService{
     public User registerNewUser(User userToRegister) {
         Role basicRole = new Role();
         try {
-            basicRole = roleRepository.findByName("USER_ROLE").orElseThrow();
+            basicRole = roleRepository.findByName("ROLE_USER").orElseThrow();
             log.info("Role {} was successfully fetched from database", "USER_ROLE");
         } catch (NoSuchElementException e) {
             log.warn("Role {} was not fetched from database", "USER_ROLE");
