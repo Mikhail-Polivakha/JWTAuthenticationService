@@ -65,17 +65,48 @@ class UserServiceImplementationTest {
 
     @Test
     void getAllUsers() {
+        List<User> userListFetchedFromDataBase = new ArrayList<>();
+        String expectedFirstName = "someFirstName";
+        userListFetchedFromDataBase.add(new User(expectedFirstName, "password"));
+        Mockito.when(userRepository.findAll()).thenReturn(userListFetchedFromDataBase);
+
+        Assertions.assertEquals(expectedFirstName, userServiceImplementation.getAllUsers().get(0).getUsername());
+        Assertions.assertEquals(1, userServiceImplementation.getAllUsers().size());
+
+        Mockito.verify(userRepository, Mockito.times(2)).findAll();
     }
 
     @Test
     void findUserByUsername() {
+        User userFetchedFromDatabase = new User("passedUsername", "somePassword");
+        Mockito.when(userRepository.findByUsername("passedUsername")).thenReturn(Optional.of(userFetchedFromDatabase));
+
+        Assertions.assertEquals("somePassword",
+                userServiceImplementation.findUserByUsername("passedUsername").getPassword());
+
+        Mockito.verify(userRepository, Mockito.times(1)).findByUsername("passedUsername");
     }
 
     @Test
     void findUserById() {
+        User userFetchedFromDatabase = new User("passedUsername", "somePassword");
+        userFetchedFromDatabase.setId(1L);
+
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(userFetchedFromDatabase));
+        Assertions.assertEquals("somePassword", userServiceImplementation.findUserById(1L).getPassword());
+        Assertions.assertEquals("passedUsername", userServiceImplementation.findUserById(1L).getUsername());
+
+        Mockito.verify(userRepository, Mockito.times(2)).findById(1L);
     }
 
     @Test
     void deleteUserById() {
+        User userFetchedFromDatabase = new User("passedUsername", "somePassword");
+        userFetchedFromDatabase.setId(1L);
+
+        Mockito.doNothing().when(userRepository).deleteById(1L);
+        Assertions.assertDoesNotThrow(() -> userServiceImplementation.deleteUserById(1L));
+
+        Mockito.verify(userRepository, Mockito.times(1)).deleteById(1L);
     }
 }
