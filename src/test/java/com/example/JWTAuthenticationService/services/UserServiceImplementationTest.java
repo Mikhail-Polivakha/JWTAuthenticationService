@@ -7,6 +7,7 @@ import com.example.JWTAuthenticationService.repositories.UserRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,12 @@ class UserServiceImplementationTest {
         User user = new User("username","password");
         Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(new Role("USER_ROLE")));
+
+        Assertions.assertDoesNotThrow(() -> userServiceImplementation.registerNewUser(user));
+        Assertions.assertEquals(user, userServiceImplementation.registerNewUser(user));
+
+        Mockito.verify(userRepository, Mockito.times(2)).save(user);
+        Mockito.verify(roleRepository, Mockito.times(2)).findByName("ROLE_USER");
     }
 
     @Test
