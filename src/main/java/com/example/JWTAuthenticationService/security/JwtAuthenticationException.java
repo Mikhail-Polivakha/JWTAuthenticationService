@@ -1,4 +1,4 @@
-package com.example.JWTAuthenticationService.models;
+package com.example.JWTAuthenticationService.security;
 
 import org.springframework.security.core.AuthenticationException;
 
