@@ -39,6 +39,9 @@ public class User extends BaseEntity {
     inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
     public User() {
     }
 }
