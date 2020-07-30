@@ -6,6 +6,8 @@ import com.example.JWTAuthenticationService.security.JwtTokenProviderUtil;
 import com.example.JWTAuthenticationService.services.UserDetailsServiceImplemenation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,7 +31,7 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
                 .csrf().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/token").permitAll()
+                .antMatchers(HttpMethod.POST, "/token").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -41,6 +43,12 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(userDetailsServiceImplemenation);
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean(name = "passwordEncoder")
